@@ -81,7 +81,7 @@ case "$1" in
     wfmarket_help
     ;;
   *)
-    echo "Unknown command: $cmd"
+    echo "Unknown command: $1"
     echo
     wfmarket_help
     exit 1
