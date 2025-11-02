@@ -2,12 +2,12 @@
 
 base_url="https://api.warframe.market/v2"
 
-wfmarket_help() {
+wf_cli_help() {
     cat <<EOF
-wfmarket - Warframe Market CLI
+wf-cli - Warframe Market CLI
 
 Usage:
-  wfmarket <command> [arguments]
+  wf-cli <command> [arguments]
 
 Available commands:
   search                  Search for an item interactively using fzf
@@ -20,9 +20,9 @@ Available commands:
   help                    Show this help message
 
 Examples:
-  wfmarket search
-  wfmarket price soma_prime_blueprint
-  wfmarket volume soma_prime_blueprint
+  wf-cli search
+  wf-cli price soma_prime_blueprint
+  wf-cli volume soma_prime_blueprint
 
 EOF
 }
@@ -133,12 +133,12 @@ case "$1" in
     echo "$orders" | jq -rs '. | sort_by(.platinum) | reverse |.[0:5]' | jq -r '.[] | "\(.quantity)\t\(.platinum)p\t\(.user.ingameName)"'
     ;;
   help|"")
-    wfmarket_help
+    wf_cli_help
     ;;
   *)
     echo "Unknown command: $1"
     echo
-    wfmarket_help
+    wf_cli_help
     exit 1
     ;;
 esac
