@@ -13,4 +13,12 @@ get_orders_from_slug() {
   curl -s "$base_url/orders/item/$1" | jq -r
 }
 
-get_orders_from_slug "$(search_slug)"
+get_ingame_sell_from_slug() {
+  get_orders_from_slug "$1" | jq -r '.data[] | select(.type == "sell")' | jq -r 'select(.user.status=="ingame")'
+}
+
+get_market_size_from_slug() {
+  get_ingame_sell_from_slug "$1" | jq -r '.quantity' | awk '{sum+=$1} END {print sum}'
+}
+
+get_market_size_from_slug "$(search_slug)"
