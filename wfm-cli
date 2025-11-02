@@ -88,6 +88,13 @@ case "$1" in
     fi
     get_market_size_from_slug "$slug"
     ;;
+  info)
+    slug="$2"
+    if [[ -z "$slug" ]]; then
+        slug=$(search_slug)
+    fi
+    get_info_from_slug "$slug"
+    ;;
   sell-orders)
     slug="$2"
     if [[ -z "$slug" ]]; then
