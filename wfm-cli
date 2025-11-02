@@ -39,6 +39,10 @@ get_ingame_sell_from_slug() {
   get_orders_from_slug "$1" | jq -r '.data[] | select(.type == "sell")' | jq -r 'select(.user.status=="ingame")'
 }
 
+get_ingame_buy_from_slug() {
+  get_orders_from_slug "$1" | jq -r '.data[] | select(.type == "buy")' | jq -r 'select(.user.status=="ingame")'
+}
+
 get_market_size_from_slug() {
   get_ingame_sell_from_slug "$1" | jq -r '.quantity' | awk '{sum+=$1} END {print sum}'
 }
@@ -49,6 +53,10 @@ get_lowest_ingame_price_from_slug() {
 
 buffered_ingame_sell() {
   echo "$1" | jq -r '.data[] | select(.type == "sell")' | jq -r 'select(.user.status=="ingame")'
+}
+
+buffered_ingame_buy() {
+  echo "$1" | jq -r '.data[] | select(.type == "buy")' | jq -r 'select(.user.status=="ingame")'
 }
 
 buffered_market_size() {
