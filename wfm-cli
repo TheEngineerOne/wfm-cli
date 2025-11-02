@@ -27,7 +27,12 @@ EOF
 }
 
 search_slug() {
-  curl -s "$base_url/items" | jq -r '.data[] | "\(.slug)\t\(.i18n.en.name)"' | fzf --with-nth=2 --delimiter='\t' | cut -f1
+  curl -s "$base_url/items" \
+  | jq -r '.data[] | "\(.slug)\t\(.i18n.en.name)"' \
+  | fzf --with-nth=2 --delimiter=$'\t' \
+        --preview "slug=\$(echo {} | cut -f1); curl -s \"$base_url/items/\$slug\" | jq -r '.data.i18n.en.description' | fold -s -w \$((\$(tput cols)))" \
+        --preview-window=right:wrap:33% \
+  | cut -f1
 }
 
 get_info_from_slug() {
