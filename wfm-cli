@@ -10,13 +10,14 @@ Usage:
   wfmarket <command> [arguments]
 
 Available commands:
-  search              Search for an item interactively using fzf
-  price <slug>        Show the lowest in-game selling price for an item
-  volume <slug>       Show the total in-game quantity available for an item
-  info <slug>         Show the informations about an item
-  sell-orders <slug>  Show the cheapest sell orders for the given slug
-  buy-orders <slug>   Show the most expensive buy orders for the given slug
-  help                Show this help message
+  search                  Search for an item interactively using fzf
+  auto-search <pattern>   Search with the pattern using grep
+  price <slug>            Show the lowest in-game selling price for an item
+  volume <slug>           Show the total in-game quantity available for an item
+  info <slug>             Show the informations about an item
+  sell-orders <slug>      Show the cheapest sell orders for the given slug
+  buy-orders <slug>       Show the most expensive buy orders for the given slug
+  help                    Show this help message
 
 Examples:
   wfmarket search
