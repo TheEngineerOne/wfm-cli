@@ -12,7 +12,7 @@ get_info_from_slug() {
 }
 
 get_orders_from_slug() {
-  curl -s "$base_url/orders/item/$1" | jq -r
+  curl -s -H "Cache-Control: no-cache" "$base_url/orders/item/$1" | jq -r
 }
 
 get_ingame_sell_from_slug() {
@@ -23,6 +23,10 @@ get_market_size_from_slug() {
   get_ingame_sell_from_slug "$1" | jq -r '.quantity' | awk '{sum+=$1} END {print sum}'
 }
 
+get_lowest_ingame_price_from_slug() {
+  get_ingame_sell_from_slug "$1" | jq -r '.platinum' | sort | head -n1 
+}
+
 buffered_ingame_sell() {
   echo "$1" | jq -r '.data[] | select(.type == "sell")' | jq -r 'select(.user.status=="ingame")'
 }
@@ -31,5 +35,11 @@ buffered_market_size() {
   buffered_ingame_sell "$1" | jq -r '.quantity' | awk '{sum+=$1} END {print sum}'
 }
 
+buffered_lowest_ingame_price() {
+  buffered_ingame_sell "$1" | jq -r '.platinum' | sort | head -n1 
+}
+
 prerequest_buffer="$(get_orders_from_slug "$(search_slug)")"
 volume="$(buffered_market_size "$prerequest_buffer")"
+price="$(buffered_lowest_ingame_price "$prerequest_buffer")"
+echo "$price $volume"
