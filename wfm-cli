@@ -84,7 +84,8 @@ case "$1" in
         slug=$(search_slug)
     fi
     orders="$(get_ingame_sell_from_slug "$slug")"
-    echo "Cheapest orders for $slug"
+    item_name="$(get_info_from_slug "$slug"|jq -r '.data.i18n.en.name')"
+    echo "Cheapest orders for $item_name"
     echo "$orders" | jq -rs '. | sort_by(.platinum) | .[0:5]' | jq -r '.[] | "\(.quantity)\t\(.platinum)p\t\(.user.ingameName)"'
     ;;
   help|"")
