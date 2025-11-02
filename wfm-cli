@@ -1,7 +1,23 @@
 #!/bin/bash
 
 base_url="https://api.warframe.market/v2"
-prerequest_buffer=""
+
+wfmarket_help() {
+    cat <<EOF
+wfmarket - Warframe Market CLI
+
+Usage:
+  wfmarket <command> [arguments]
+
+Available commands:
+  search       Search for an item interactively using fzf
+  price <slug> Show the lowest in-game selling price for an item
+  volume <slug> Show the total in-game quantity available for an item
+  help         Show this help message
+
+Examples:
+EOF
+}
 
 search_slug() {
   curl -s "$base_url/items" | jq -r '.data[] | "\(.slug)\t\(.i18n.en.name)"' | fzf --with-nth=2 --delimiter='\t' | cut -f1
@@ -39,7 +55,35 @@ buffered_lowest_ingame_price() {
   buffered_ingame_sell "$1" | jq -r '.platinum' | sort -n | head -n1 
 }
 
-prerequest_buffer="$(get_orders_from_slug "$(search_slug)")"
-volume="$(buffered_market_size "$prerequest_buffer")"
-price="$(buffered_lowest_ingame_price "$prerequest_buffer")"
-echo "$price $volume"
+## Main Cli
+
+case "$1" in
+  search)
+    search_slug
+    ;;
+  price)
+    # Use $1 if given, else fallback to search_slug
+    slug="$2"
+    if [[ -z "$slug" ]]; then
+        slug=$(search_slug)
+    fi
+    get_lowest_ingame_price_from_slug "$slug"
+    ;;
+  volume)
+    # Same fallback
+    slug="$2"
+    if [[ -z "$slug" ]]; then
+        slug=$(search_slug)
+    fi
+    get_market_size_from_slug "$slug"
+    ;;
+  help|"")
+    wfmarket_help
+    ;;
+  *)
+    echo "Unknown command: $cmd"
+    echo
+    wfmarket_help
+    exit 1
+    ;;
+esac
