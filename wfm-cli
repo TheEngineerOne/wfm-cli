@@ -35,6 +35,13 @@ search_slug() {
   | cut -f1
 }
 
+headless_search_slug() {
+  curl -s "$base_url/items" \
+  | jq -r '.data[] | "\(.slug)\t\(.i18n.en.name)"' \
+  | grep "$1" \
+  | cut -f1
+}
+
 get_info_from_slug() {
   curl -s "$base_url/item/$1" | jq -r
 }
