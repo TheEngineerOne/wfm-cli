@@ -88,7 +88,7 @@ case "$1" in
     search_slug
     ;;
   auto-search)
-    headless_search_slug $2
+    headless_search_slug "$2"
     ;;
   price)
     slug="$2"
