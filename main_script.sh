@@ -9,7 +9,7 @@ get_info_from_slug() {
   curl -s "$base_url/item/$1" | jq -r
 }
 
-get_orders_from_slug(){
+get_orders_from_slug() {
   curl -s "$base_url/orders/item/$1" | jq -r
 }
 
