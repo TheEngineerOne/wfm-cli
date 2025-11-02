@@ -16,6 +16,10 @@ Available commands:
   help         Show this help message
 
 Examples:
+  wfmarket search
+  wfmarket price soma_prime_blueprint
+  wfmarket volume soma_prime_blueprint
+
 EOF
 }
 
