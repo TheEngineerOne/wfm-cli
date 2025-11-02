@@ -24,7 +24,7 @@ get_market_size_from_slug() {
 }
 
 get_lowest_ingame_price_from_slug() {
-  get_ingame_sell_from_slug "$1" | jq -r '.platinum' | sort | head -n1 
+  get_ingame_sell_from_slug "$1" | jq -r '.platinum' | sort -n | head -n1 
 }
 
 buffered_ingame_sell() {
@@ -36,7 +36,7 @@ buffered_market_size() {
 }
 
 buffered_lowest_ingame_price() {
-  buffered_ingame_sell "$1" | jq -r '.platinum' | sort | head -n1 
+  buffered_ingame_sell "$1" | jq -r '.platinum' | sort -n | head -n1 
 }
 
 prerequest_buffer="$(get_orders_from_slug "$(search_slug)")"
