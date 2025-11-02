@@ -60,13 +60,11 @@ buffered_lowest_ingame_price() {
 }
 
 ## Main Cli
-
 case "$1" in
   search)
     search_slug
     ;;
   price)
-    # Use $1 if given, else fallback to search_slug
     slug="$2"
     if [[ -z "$slug" ]]; then
         slug=$(search_slug)
@@ -74,12 +72,19 @@ case "$1" in
     get_lowest_ingame_price_from_slug "$slug"
     ;;
   volume)
-    # Same fallback
     slug="$2"
     if [[ -z "$slug" ]]; then
         slug=$(search_slug)
     fi
     get_market_size_from_slug "$slug"
+    ;;
+  sell-orders)
+    slug="$2"
+    if [[ -z "$slug" ]]; then
+        slug=$(search_slug)
+    fi
+    orders="$(get_ingame_sell_from_slug "$slug")"
+    echo "$orders" | jq -rs ". | sort_by(.platinum) | .[0:5]"
     ;;
   help|"")
     wfmarket_help
