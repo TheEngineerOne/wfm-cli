@@ -87,6 +87,9 @@ case "$1" in
   search)
     search_slug
     ;;
+  auto-search)
+    headless_search_slug $2
+    ;;
   price)
     slug="$2"
     if [[ -z "$slug" ]]; then
